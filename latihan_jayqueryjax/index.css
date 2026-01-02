@@ -1,0 +1,37 @@
+:root{
+  --bs-red: #E00000;
+  --bs-white: #EBEBEB;
+}
+
+[data-bs-theme="dark"]{
+  --bs-red: #A30000;
+  --bs-white: #C2C2C2;
+  --bs-text: #060A0E;
+}
+
+
+
+#profile, #gallery {
+    background-color: var(--bs-red);
+}
+
+#article, #schedule,  {
+  background-color: var(--bs-white)
+  
+}
+
+.footer i {
+  /* color: var(--bs-white);
+  color: var(--bs-text); */
+  color: white;
+}
+
+#gallery img {
+  height: 300px;
+  object-fit: cover;
+}
+
+#carouselExample {
+  max-width: 600px;
+  margin: auto;
+}
