@@ -372,27 +372,25 @@ include "koneksi.php";
         class="carousel slide shadow-lg rounded-4 overflow-hidden"
         data-bs-ride="carousel">
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="img/g1.jpg" class="d-block w-100" alt="Kota" />
+          
+         <?php
+        $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+        $hasil = $conn->query($sql);
+        $active = true;
+
+        while ($row = $hasil->fetch_assoc()) {
+        ?>
+          <div class="carousel-item <?= $active ? 'active' : '' ?>">
+            <img
+              src="img/<?= $row['gambar']; ?>"
+              class="d-block w-100"
+              alt="Gallery Image">
           </div>
-          <div class="carousel-item">
-            <img src="img/g2.jpg" class="d-block w-100" alt="Sore" />
-          </div>
-          <div class="carousel-item">
-            <img src="img/g3.jpg" class="d-block w-100" alt="Jamur" />
-          </div>
-          <div class="carousel-item">
-            <img src="img/g4.jpg" class="d-block w-100" alt="Planet" />
-          </div>
-          <div class="carousel-item">
-            <img src="img/g5.jpg" class="d-block w-100" alt="Hewan" />
-          </div>
-          <div class="carousel-item">
-            <img src="img/g6.jpg" class="d-block w-100" alt="Hewan" />
-          </div>
-          <div class="carousel-item">
-            <img src="img/g7.jpg" class="d-block w-100" alt="Hewan" />
-          </div>
+        <?php
+          $active = false;
+        }
+        ?>
+
         </div>
 
         <button
