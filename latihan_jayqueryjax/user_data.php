@@ -23,33 +23,96 @@
         ?>
             <tr>
                 <td><?= $no++ ?></td>
-
                 <td><?= $row["username"] ?></td>
-
                 <td>
                     <?php
-                    if ($row["foto"] != '' && file_exists('img/' . $row["foto"])) {
+                    if ($row["foto"] != '') {
+                        if (file_exists('img/' . $row["foto"] . '')) {
                     ?>
-                        <img src="img/<?= $row["foto"] ?>" width="100">
-                    <?php } else { ?>
-                        <span class="text-muted">Tidak ada</span>
-                    <?php } ?>
+                            <img src="img/<?= $row["foto"] ?>" width="100">
+                    <?php
+                        }
+                    }
+                    ?>
                 </td>
-
                 <td>
-                    <a href="#" title="edit" class="badge rounded-pill text-bg-success"
-                        data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <a href="#" title="delete" class="badge rounded-pill text-bg-danger"
-                        data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>">
-                        <i class="bi bi-x-circle"></i>
-                    </a>
+                    <a href="#" title="edit" class="badge rounded-pill text-bg-success" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil"></i></a>
+                    <a href="#" title="delete" class="badge rounded-pill text-bg-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-x-circle"></i></a>
 
-                    <!-- modal edit & hapus tetap seperti milikmu -->
+                    <!-- Awal Modal Edit -->
+                    <div class="modal fade" id="modalEdit<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit User</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form method="post" action="" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="formGroupExampleInput" class="form-label">Username</label>
+                                            <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                            <input type="text" class="form-control" name="username" placeholder="Tuliskan Username" value="<?= $row["username"] ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="floatingPassword">Password</label>
+                                            <input type="password" class="form-control" placeholder="Tuliskan Password Baru (jika ingin mengganti)" name="password">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="formGroupExampleInput2" class="form-label">Ganti Foto</label>
+                                            <input type="file" class="form-control" name="foto">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="formGroupExampleInput3" class="form-label">Foto Lama</label>
+                                            <?php
+                                            if ($row["foto"] != '') {
+                                                if (file_exists('img/' . $row["foto"] . '')) {
+                                            ?>
+                                                    <br><img src="img/<?= $row["foto"] ?>" width="100">
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+                                            <input type="hidden" name="foto_lama" value="<?= $row["foto"] ?>">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <input type="submit" value="simpan" name="simpan" class="btn btn-primary">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Akhir Modal Edit -->
+
+                    <!-- Awal Modal Hapus -->
+                    <div class="modal fade" id="modalHapus<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Konfirmasi Hapus User</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form method="post" action="" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="formGroupExampleInput" class="form-label">Yakin akan menghapus user "<strong><?= $row["username"] ?></strong>"?</label>
+                                            <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                            <input type="hidden" name="foto" value="<?= $row["foto"] ?>">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">batal</button>
+                                        <input type="submit" value="hapus" name="hapus" class="btn btn-primary">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Akhir Modal Hapus -->
                 </td>
             </tr>
-
         <?php
         }
         ?>
@@ -66,7 +129,7 @@ $total_records = $hasil1->num_rows;
     <ul class="pagination justify-content-end">
         <?php
         $jumlah_page = ceil($total_records / $limit);
-        $jumlah_number = 1;
+        $jumlah_number = 1; 
         $start_number = ($hlm > $jumlah_number) ? $hlm - $jumlah_number : 1;
         $end_number = ($hlm < ($jumlah_page - $jumlah_number)) ? $hlm + $jumlah_number : $jumlah_page;
 

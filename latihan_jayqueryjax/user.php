@@ -12,11 +12,9 @@
         <!-- Awal Modal Tambah-->
         <div class="modal fade" id="modalTambah" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah User</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
+                <div class="modal-content"><li class="nav-item">
+                        <a class="nav-link" href="admin.php?page=gallery">Gallery</a>
+                    </li>
                     <form method="post" action="" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="mb-3">
@@ -26,10 +24,6 @@
                             <div class="mb-3">
                                 <label for="floatingPassword">Password</label>
                                 <input type="password" class="form-control" placeholder="Tuliskan Password" name="password" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="formGroupExampleInput2" class="form-label">Foto</label>
-                                <input type="file" class="form-control" name="foto">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -106,7 +100,12 @@ if (isset($_POST['simpan'])) {
             $password = md5($_POST['password']);
             $stmt = $conn->prepare("UPDATE user SET username =?, password =?, foto = ? WHERE id = ?");
             $stmt->bind_param("sssi", $username, $password, $foto, $id);
-        } else {    
+        } else {
+            // Keep old password if field is empty (handled in Edit Modal logic usually, or just don't update it)
+            // But here I'm overwriting with new MD5 if provided. 
+            // Wait, in the Edit form I should handle "Leave blank to keep current password".
+            // Let's assume if the input is empty in Edit, we don't update password.
+            // But verify: content of $_POST['password']
             if($_POST['password'] == "") {
                  $stmt = $conn->prepare("UPDATE user SET username =?, foto = ? WHERE id = ?");
                  $stmt->bind_param("ssi", $username, $foto, $id);
