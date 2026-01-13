@@ -28,8 +28,8 @@
                                 <input type="password" class="form-control" placeholder="Tuliskan Password" name="password" required>
                             </div>
                             <div class="mb-3">
-                                <label for="formGroupExampleInput2" class="form-label">Gambar</label>
-                                <input type="file" class="form-control" name="gambar">
+                                <label for="formGroupExampleInput2" class="form-label">Foto</label>
+                                <input type="file" class="form-control" name="foto">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -107,11 +107,6 @@ if (isset($_POST['simpan'])) {
             $stmt = $conn->prepare("UPDATE user SET username =?, password =?, foto = ? WHERE id = ?");
             $stmt->bind_param("sssi", $username, $password, $foto, $id);
         } else {
-            // Keep old password if field is empty (handled in Edit Modal logic usually, or just don't update it)
-            // But here I'm overwriting with new MD5 if provided. 
-            // Wait, in the Edit form I should handle "Leave blank to keep current password".
-            // Let's assume if the input is empty in Edit, we don't update password.
-            // But verify: content of $_POST['password']
             if ($_POST['password'] == "") {
                 $stmt = $conn->prepare("UPDATE user SET username =?, foto = ? WHERE id = ?");
                 $stmt->bind_param("ssi", $username, $foto, $id);
